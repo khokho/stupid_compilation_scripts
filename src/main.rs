@@ -1,5 +1,5 @@
 use anyhow::{Context, Result};
-use std::fs::File;
+use std::fs::{File, read_to_string};
 use std::io::{stdout, Read, Write};
 use std::process::Command;
 use std::time::{Duration, Instant};
@@ -43,11 +43,7 @@ fn run(ex: &str, input: &str) -> Result<RunResult> {
     println!("**********INPUT************");
     println!("");
 
-    let mut buf = vec![];
-    File::open(input)
-        .context(format!("File not found: {}", input))?
-        .read_to_end(&mut buf)?;
-    stdout().write_all(&buf)?;
+    print!("{}", read_to_string(input).context(format!("File not found: {}", input))?);
 
     println!("");
     println!("----------OUTPUT-----------");
